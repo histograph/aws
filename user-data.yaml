@@ -1,0 +1,15 @@
+#cloud-config
+groups:
+  - histograph
+users:
+  - name: histograph
+    gecos: histograph.io
+    primary-group: histograph
+    system: true
+#  - name: jelle
+#    gecos: Jelle Herold
+#    primary-group: wheel
+#    sudo: ALL=(ALL) NOPASSWD:ALL
+#    no-user-group: true
+#    ssh-authorized-keys:
+#      - ssh-rsa AAAAB3NzYOURPUBKEYCONTENTSHERE user@host
