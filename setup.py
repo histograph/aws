@@ -2,6 +2,9 @@ import boto3
 import yaml
 from os.path import expanduser
 
+import pprint
+pp = pprint.PrettyPrinter(indent=2)
+
 ec2 = boto3.resource('ec2')
 ec2client = boto3.client('ec2')
 
@@ -9,29 +12,44 @@ conf = {
     'image': 'ami-a6b0b7bb',
     'subnet': 'subnet-71b36f0a',
     'securityGroup': ['sg-baac24d3'],
-    'vpc': 'vpc-6865cc01'
+    'vpc': 'vpc-6865cc01',
+    'app-user': 'histograph'
 }
 
+# load base config
+with open('user-data.yaml', 'r') as f:
+    user_data = yaml.load(f.read())
+
+# add application system user
+user_data['users'].append({
+    'name': conf['app-user'],
+    'gecos': conf['app-user'] + ' application',
+    'primary-group': conf['app-user'],
+    'system': True
+})
+
+# add similarly named group
+user_data['groups'].append(conf['app-user'])
+
+# load public key
 keys = []
 with open(expanduser('~/.ssh/id_rsa.pub'), 'r') as f:
     pubkey = f.read().strip()
     user = pubkey.split(' ')[-1].split('@')[0]
+    print "%s [%s]" % (pubkey, user)
 
-print user
-
-with open('user-data.yaml', 'r') as f:
-    user_data = yaml.load(f.read())
-
+# add current user as sudo user with SSH public key
 user_data['users'].append({
     'name': user,
     'gecos': user,
-    'primary-group': 'wheel',
-    'sudo': 'ALL=(ALL) NOPASSWD:ALL',
     'no-user-group': True,
+    'primary-group': 'wheel',
     'ssh-authorized-keys': [pubkey]
 })
 
-print yaml.dump(user_data)
+# create user-data string for EC2
+user_data_str = '#cloud-config\n' + yaml.dump(user_data)
+print(user_data_str)
 
 exit()
 
@@ -49,7 +67,7 @@ instances = ec2.create_instances(
         'AssociatePublicIpAddress': True
     }],
     #InstanceType = 't1.micro',
-    UserData = '#cloud-config\n' + yaml.dump(user_data)
+    UserData = user_data_str
 )
 
 inst = instances[0]

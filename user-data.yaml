@@ -1,11 +1,6 @@
 #cloud-config
-groups:
-  - histograph
-users:
-  - name: histograph
-    gecos: histograph.io
-    primary-group: histograph
-    system: true
+groups: []
+users: []
 #  - name: jelle
 #    gecos: Jelle Herold
 #    primary-group: wheel
