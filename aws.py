@@ -1,4 +1,5 @@
 import boto3
+from log import log
 from config import conf
 
 ec2 = boto3.resource('ec2')
@@ -7,7 +8,7 @@ ec2client = boto3.client('ec2')
 # start an instance and return IP
 def start_instance(user_data_str):
 
-    print("Requesting instance")
+    log("Requesting instance")
     instances = ec2.create_instances(
         ImageId = conf['image'],
         #SecurityGroupIds = conf['securityGroup'],
@@ -25,12 +26,12 @@ def start_instance(user_data_str):
     )
 
     inst = instances[0]
-    print("Waiting for instance '%s' to start" % inst.id)
+    log("Waiting for instance '%s' to start" % inst.id)
 
     waiter = ec2client.get_waiter('instance_running')
     waiter.wait(InstanceIds=[inst.id])
 
-    print("Instance '%s' running" % inst.id)
+    log("Instance '%s' running" % inst.id)
 
     inst.load()
 

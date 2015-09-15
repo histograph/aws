@@ -25,7 +25,7 @@ def add_ssh_key(filename):
     with open(fn, 'r') as f:
         pubkey = f.read().strip()
         user = pubkey.split(' ')[-1].split('@')[0]
-        print "Loaded %s, user [%s]\n\t%s" % (filename, user, pubkey)
+        log("Loaded %s, user [%s]\n\t%s" % (filename, user, pubkey))
 
     # add current user as sudo user with SSH public key
     user_data['users'].append({
