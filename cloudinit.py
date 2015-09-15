@@ -1,5 +1,6 @@
 import yaml
 from os.path import expanduser
+from log import log
 
 user_data = {
     'users': [],
