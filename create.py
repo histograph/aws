@@ -31,8 +31,8 @@ print('-' * 80)
 
 #exit()
 
-# start instance
-inst = aws.start_instance(user_data_str)
+# start instance from gzipped user data
+inst = aws.start_instance(init.get_zconfig())
 
 # log result
 print("running!\n\n\tAddress '%s' ~ '%s'" % (inst.public_dns_name, inst.public_ip_address))

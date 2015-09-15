@@ -37,16 +37,13 @@ def add_ssh_key(filename):
         'ssh-authorized-keys': [pubkey]
     })
 
-import base64
-
 def write_file(filename, path, owner = 'root:root', permissions = '0644'):
     fn = expanduser(filename)
-    with open(fn, 'r') as f:
+    with open(fn, 'rb') as f:
         content = f.read()
-        print("Read %d bytes from %s,\n\t write path = [%s]" % (len(content), fn, path))
+        log("Read %d bytes from %s,\n\t write path = [%s]" % (len(content), fn, path))
         user_data['write_files'].append({
-            'encoding': 'b64',
-            'content': base64.b64encode(content),
+            'content': content,
             'owner': owner,
             'path' : path,
             'permissions' : permissions
@@ -56,3 +53,10 @@ def get_config():
     # create user-data string for EC2
     user_data_str = '#cloud-config\n' + yaml.dump(user_data)
     return user_data_str
+
+# gzipped config
+import sys
+import gzip
+
+def get_zconfig():
+    return gzip.compress(bytes(get_config(), sys.getdefaultencoding()))
