@@ -43,11 +43,19 @@ print("Waiting for SSH to come up @ %s" % inst.public_dns_name)
 while(not ssh.is_up(inst.public_dns_name)):
     pass
 
-print("SSH running")
+print("SSH running @ %s\nWaiting for console output" % inst.public_dns_name)
 
 # log console output
+from time import sleep
+output = False
+while(not output):
+    try:
+        output = inst.console_output()['Output']
+    except:
+        sleep(5)
+
 print('-' * 80)
-print(inst.console_output()['Output'])
+print(output)
 print('-' * 80)
 
 # log result
