@@ -26,7 +26,9 @@ init.write_file('machines/elastic/elasticsearch.gpg.key', '/root/elastic/elastic
 init.write_file('machines/elastic/install.sh', '/root/elastic/install.sh')
 
 init.write_file('machines/neo4j/neotechnology.gpg.key', '/root/neo4j/neotechnology.gpg.key')
-init.write_file('machines/neo4j/install.sh', '/root/neo4j/install.sh')
+init.write_file('machines/neo4j/install.sh', '/root/neo4j/install.sh', permissions='0755')
+
+init.run_command('sudo sh -c "cd ~/neo4j ; ./install.sh"')
 
 # create user-data string for EC2
 user_data_str = init.get_config()
