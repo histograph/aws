@@ -32,8 +32,15 @@ def add_ssh_key(filename):
     user_data['users'].append({
         'name': user,
         'gecos': user,
-        'no-user-group': True,
-        'primary-group': 'wheel',
+
+        # on debian 'staff' seems suitable
+        # on centOS 'wheel' seems suitable
+        # but both systems have a 'users' group, let's use that
+        # 'primary-group': 'users',
+        'no-user-group': False,
+
+        # no passwd
+        'sudo': ['ALL=(ALL) NOPASSWD:ALL'],
         'ssh-authorized-keys': [pubkey]
     })
 
