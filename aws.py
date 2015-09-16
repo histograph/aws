@@ -34,7 +34,6 @@ def start_instance(user_data_str):
     log("Instance '%s' running" % inst.id)
 
     inst.load()
+    log("Address '%s' (%s)" % (inst.public_dns_name, inst.public_ip_address))
 
-    # print inst.console_output()
-    # inst.public_dns_name
     return inst
