@@ -8,7 +8,7 @@ ec2client = boto3.client('ec2')
 # start an instance and return IP
 def start_instance(user_data_str):
 
-    log("Requesting instance")
+    log("Requesting instance, %d bytes userdata" % (len(user_data_str)))
     instances = ec2.create_instances(
         ImageId = conf['image'],
         #SecurityGroupIds = conf['securityGroup'],
