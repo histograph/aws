@@ -1,9 +1,17 @@
 #!/usr/bin/env bash
 
 # run as root
+echo
+echo "  ---%%%%%%%%%%%%%%%%%%%%%%%%%%---"
+echo "----%%%%% INSTALLING NEO4J %%%%%----"
+echo "  ---%%%%%%%%%%%%%%%%%%%%%%%%%%---"
+echo
 
 # to update GPG key, run
 # `curl -LO http://debian.neo4j.org/neotechnology.gpg.key`
+
+# install debian keys
+apt install debian-archive-keyring -y
 
 # import Neo4J signing key
 cat neotechnology.gpg.key | apt-key add -
