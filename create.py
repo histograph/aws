@@ -59,5 +59,8 @@ print('-' * 80)
 print(output)
 print('-' * 80)
 
+ssh.tail_cloudinit(inst.public_dns_name)
+
+
 # log result
 print("up and running!\n\n\tAddress '%s' ~ '%s'" % (inst.public_dns_name, inst.public_ip_address))
