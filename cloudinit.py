@@ -5,6 +5,7 @@ from log import log
 user_data = {
     'users': [],
     'groups': [],
+    'runcmd': [],
     'write_files': []
 }
 
@@ -55,6 +56,9 @@ def write_file(filename, path, owner = 'root:root', permissions = '0644'):
             'path' : path,
             'permissions' : permissions
         })
+
+def run_command(cmd):
+    user_data['runcmd'].append(cmd)
 
 def get_config():
     # create user-data string for EC2
