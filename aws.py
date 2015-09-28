@@ -37,3 +37,15 @@ def start_instance(user_data_str):
     log("Address '%s' (%s)" % (inst.public_dns_name, inst.public_ip_address))
 
     return inst
+
+from time import sleep
+
+def wait_for_console_output(inst):
+    log("Waiting for console output")
+    while(True):
+        try:
+            return inst.console_output()['Output']
+        except:
+            sleep(3)
+            log('.')
+
