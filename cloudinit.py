@@ -6,7 +6,14 @@ user_data = {
     'users': [],
     'groups': [],
     'runcmd': [],
-    'write_files': []
+
+    # on amazon, sudo is fucked up in that it requires a tty
+    # doesn't hurt on debian...
+    'write_files': [{
+        'path': '/root/sudoers.d/no-requiretty',
+        'permissions': '0440',
+        'content': 'Defaults !requiretty\n'
+    }]
 }
 
 def add_app_user(name):
