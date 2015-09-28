@@ -41,26 +41,11 @@ print('-' * 80)
 inst = aws.start_instance(init.get_zconfig())
 
 # wait for ssh to come up
-log("Waiting for SSH to come up")
-while(not ssh.is_up(inst.public_dns_name)):
-    pass
+ssh.wait_SSH_up(inst.public_dns_name)
 
-log("Waiting for console output")
-# log console output
-from time import sleep
-output = False
-while(not output):
-    try:
-        output = inst.console_output()['Output']
-    except:
-        sleep(3)
 
-print('-' * 80)
-print(output)
-print('-' * 80)
-
+# start tailing cloudinit output
 ssh.tail_cloudinit(inst.public_dns_name)
-
 
 # log result
 print("up and running!\n\n\tAddress '%s' ~ '%s'" % (inst.public_dns_name, inst.public_ip_address))

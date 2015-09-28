@@ -1,19 +1,23 @@
 import re
 import paramiko
-
+from time import sleep
 from log import log
 
-def is_up(host):
-    try:
-        client = paramiko.SSHClient()
-        client.set_missing_host_key_policy(paramiko.client.AutoAddPolicy())
-        client.connect(host, timeout=10)
-        stdin, stdout, stderr = client.exec_command("echo")
-        exit_status = stdout.channel.recv_exit_status()
-        client.close()
-        return (exit_status == 0)
-    except:
-        return False
+
+def wait_SSH_up(host):
+    log("Waiting for SSH to come up")
+    while(True):
+        try:
+            client = paramiko.SSHClient()
+            client.set_missing_host_key_policy(paramiko.client.AutoAddPolicy())
+            client.connect(host, timeout=10)
+            stdin, stdout, stderr = client.exec_command("echo")
+            exit_status = stdout.channel.recv_exit_status()
+            client.close()
+            return (exit_status == 0)
+        except:
+            sleep(2)
+            log('.')
 
 def tail_cloudinit(host):
     log("Tailing cloud init log*")
