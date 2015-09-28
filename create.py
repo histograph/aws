@@ -11,34 +11,36 @@ import cloudinit as init
 import ssh
 import aws
 
-from config import conf
-
-# add application system user
-init.add_app_user(conf['app-user'])
+from machines import machines
 
 # add my own ssh key (username 'detected')
 init.add_ssh_key('~/.ssh/id_rsa.pub')
 
-# add file
-#init.write_file('api.nginx.conf', '/etc/nginx/sites-enabled/api')
+# setup histograph-api (amazon linux)
+# machines.histograph_api(init)
 
-init.write_file('machines/elastic/elasticsearch.gpg.key', '/root/elastic/elasticsearch.gpg.key')
-init.write_file('machines/elastic/install.sh', '/root/elastic/install.sh')
+# setup neo4j (debian)
+machines.neo4j(init)
+# machines.elastic(init)
 
-init.write_file('machines/neo4j/neotechnology.gpg.key', '/root/neo4j/neotechnology.gpg.key')
-init.write_file('machines/neo4j/install.sh', '/root/neo4j/install.sh', permissions='0755')
-
-init.run_command('sudo sh -c "cd ~/neo4j ; ./install.sh"')
-
-# create user-data string for EC2
-user_data_str = init.get_config()
-
+# print the user-data string for EC2
 print('-' * 80)
-print(user_data_str)
+print(init.get_config())
 print('-' * 80)
+
+conf = {
+    'keypair': 'jelle@joule',
+    # 'image': 'ami-a6b0b7bb',# amazon linux
+    'image': 'ami-b092aaad', # debian jessie
+    'subnet': 'subnet-71b36f0a',
+    'securityGroup': ['sg-baac24d3'],
+    'vpc': 'vpc-6865cc01',
+    'ipAddress': '10.0.0.100',
+    'app-user': 'histograph'
+}
 
 # start instance from gzipped user data
-inst = aws.start_instance(init.get_zconfig())
+inst = aws.start_instance(init.get_zconfig(), conf)
 
 # wait for ssh to come up
 ssh.wait_SSH_up(inst.public_dns_name)
