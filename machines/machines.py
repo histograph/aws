@@ -35,7 +35,7 @@ def histograph_api(init):
     init.add_app_user('histograph')
 
     init.write_file(
-        'machines/histograph-api/setup-nodejs.sh',
+        'machines/setup-nodejs.sh',
         '/root/histograph-api/setup-nodejs.sh')
 
     installer(init, 'histograph-api')
