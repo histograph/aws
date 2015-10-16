@@ -39,3 +39,14 @@ def histograph_api(init):
         '/root/histograph-api/setup-nodejs.sh')
 
     installer(init, 'histograph-api')
+
+def histograph_core(init):
+    """Configure histograph-api (Amazon Linux)"""
+
+    init.add_app_user('histograph')
+
+    init.write_file(
+        'machines/setup-nodejs.sh',
+        '/root/histograph-core/setup-nodejs.sh')
+
+    installer(init, 'histograph-core')
