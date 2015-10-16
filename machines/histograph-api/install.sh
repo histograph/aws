@@ -91,7 +91,7 @@ cat > /opt/histograph/api.forever.json << FOREVER
     // Histograph API
     "uid": "api",
     "append": true,
-    "watch": true,
+    "watch": false,
     "script": "index.js",
     "sourceDir": "/opt/histograph/api",
     "pidFile": "/var/run/histograph/api.pid",
