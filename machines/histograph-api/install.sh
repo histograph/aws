@@ -39,6 +39,11 @@ chown histograph:histograph /var/log/histograph/ /var/run/histograph/
 cd /opt/histograph
 
 cat > setup.sh << SETUP
+
+# clean up
+rm -rf ~/api ~/core
+
+# clone master branch
 git clone https://github.com/histograph/api
 git clone https://github.com/histograph/core
 
