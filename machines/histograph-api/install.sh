@@ -43,10 +43,10 @@ git clone https://github.com/histograph/api
 git clone https://github.com/histograph/core
 
 # install node dependencies
-cd api
+cd ~/api
 npm install
 
-cd core
+cd ~/core
 npm install
 SETUP
 
