@@ -22,7 +22,7 @@ echo 'deb http://debian.neo4j.org/repo stable/' > /etc/apt/sources.list.d/neo4j.
 # update and install
 apt update -y
 apt upgrade -y
-apt install neo4j -y
+apt install curl neo4j -y
 
 # disable Neo4J auth
 sed -i_ -e 's/auth_enabled=true/auth_enabled=false/' \
@@ -49,3 +49,25 @@ cp /root/neo4j-plugin/target/histograph-plugin-*.jar /usr/share/neo4j/plugins
 
 # restart
 service neo4j-service restart
+
+# function to test if http is up
+http_okay () {
+  res=`curl -fsI $1 | grep HTTP/1.1 | awk {'print $2'}`
+  if [ "$res" = "200" ];
+  then
+    echo testing $1, status is: OK;
+    return 0;
+  else
+    echo testing $1, status is: not okay;
+    return 1;
+  fi
+}
+
+# wait until neo4j up
+until http_okay localhost:7474;
+do
+  sleep 3s;
+done;
+
+# setup schema
+neo4j-shell -c "CREATE CONSTRAINT ON (n:_) ASSERT n.id IS UNIQUE;"
