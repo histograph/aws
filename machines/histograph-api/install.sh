@@ -124,7 +124,7 @@ cat > /etc/init.d/histograph-api << INITD
 ### END INIT INFO
 
 FOREVER_CONFIG=/opt/histograph/api.forever.json
-FOREVER_UID=app
+FOREVER_UID=api
 FOREVER_USER=histograph
 
 case "\$1" in
@@ -133,11 +133,11 @@ case "\$1" in
         RETVAL=\$?
         ;;
     stop)
-        su "\$FOREVER_USER" -c "NODE_ENV=production forever stop \$FOREVER_UID"
+        su "\$FOREVER_USER" -c "NODE_ENV=production forever stop --uid \$FOREVER_UID"
         RETVAL=\$?
         ;;
     restart)
-        su "\$FOREVER_USER" -c "NODE_ENV=production forever restart \$FOREVER_UID"
+        su "\$FOREVER_USER" -c "NODE_ENV=production forever restart --uid \$FOREVER_UID"
         RETVAL=\$?
         ;;
     status)
