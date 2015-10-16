@@ -4,6 +4,10 @@ You should prefer to run python in a jail called virtualenv.
 
 	pip install virtualenv
 
+This requires `python3`,
+
+	brew install python3
+
 Create jail in subdir `venv/`, ensure Python version 3.
 
 	virtualenv -p python3 venv
@@ -30,6 +34,13 @@ Also set up a default region (in e.g. ~/.aws/config):
 	region = eu-central-1
 
 Now you can run the scripts.
+
+If you have AWS environment variables set, these will also be picked up and
+might conflict with `~/.aws/credentials`. In bash you can clear them like this:
+
+	unset AWS_SECRET_ACCESS_KEY
+	unset AWS_ACCESS_KEY_ID
+
 
 # Workflow
 
