@@ -118,24 +118,24 @@ cat > /etc/init.d/histograph-api << INITD
 # Description:       histograph-api
 ### END INIT INFO
 
-CONF=/opt/histograph/api.forever.json
-UID=app
+FOREVER_CONFIG=/opt/histograph/api.forever.json
+FOREVER_UID=app
 USER=histograph
 
 case "\$1" in
     start)
         echo "Starting histograph-api"
-        su $USER -c "NODE_ENV=production forever start $CONF"
+        su $USER -c "NODE_ENV=production forever start \$FOREVER_CONFIG"
         RETVAL=\$?
         ;;
     stop)
         echo -n "Shutting down histograph-api"
-        su $USER -c "NODE_ENV=production forever stop $UID"
+        su $USER -c "NODE_ENV=production forever stop $FOREVER_UID"
         RETVAL=\$?
         ;;
     restart)
         echo -n "Restarting histograph-api"
-        su $USER -c "NODE_ENV=production forever restart $UID"
+        su $USER -c "NODE_ENV=production forever restart $FOREVER_UID"
         RETVAL=\$?
         ;;
     status)
