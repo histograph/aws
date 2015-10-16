@@ -129,22 +129,18 @@ FOREVER_USER=histograph
 
 case "\$1" in
     start)
-        echo "Starting histograph-api"
         su "\$FOREVER_USER" -c "NODE_ENV=production forever start \$FOREVER_CONFIG"
         RETVAL=\$?
         ;;
     stop)
-        echo -n "Shutting down histograph-api"
         su "\$FOREVER_USER" -c "NODE_ENV=production forever stop \$FOREVER_UID"
         RETVAL=\$?
         ;;
     restart)
-        echo -n "Restarting histograph-api"
         su "\$FOREVER_USER" -c "NODE_ENV=production forever restart \$FOREVER_UID"
         RETVAL=\$?
         ;;
     status)
-        echo -n "Status api"
         su "\$FOREVER_USER" -c "forever list"
         RETVAL=\$?
         ;;
