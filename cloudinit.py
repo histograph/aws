@@ -2,6 +2,7 @@ import yaml
 import sys
 import gzip
 from os.path import expanduser
+
 from log import log
 
 user_data = {
@@ -17,6 +18,7 @@ user_data = {
         'content': 'Defaults !requiretty\n'
     }]
 }
+
 
 def add_app_user(name):
     # add application system user
@@ -59,20 +61,27 @@ def add_ssh_key(user, pubkey):
         'ssh-authorized-keys': [pubkey]
     })
 
-def write_file(filename, path, owner = 'root:root', permissions = '0644'):
+
+def write_file(filename, path, owner='root:root', permissions='0644'):
     fn = expanduser(filename)
     with open(fn, 'rb') as f:
         content = f.read()
-        log("Read %d bytes from %s,\n\t write path = [%s]" % (len(content), fn, path))
+
+        # log size, filename, path
+        d = (len(content), fn, path)
+        log("Read %d bytes from %s,\n\t write path = [%s]" % d)
+
         user_data['write_files'].append({
             'content': content,
             'owner': owner,
-            'path' : path,
-            'permissions' : permissions
+            'path': path,
+            'permissions': permissions
         })
+
 
 def run_command(cmd):
     user_data['runcmd'].append(cmd)
+
 
 def get_config():
     # create user-data string for EC2
