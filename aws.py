@@ -1,5 +1,6 @@
 import boto3
 from log import log
+from time import sleep
 
 ec2 = boto3.resource('ec2')
 ec2client = boto3.client('ec2')
@@ -38,8 +39,6 @@ def start_instance(user_data_str, conf):
     log("Address '%s' (%s)" % (inst.public_dns_name, inst.public_ip_address))
 
     return inst
-
-from time import sleep
 
 
 def wait_for_console_output(inst):
