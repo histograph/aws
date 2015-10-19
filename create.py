@@ -14,7 +14,8 @@ import aws
 from machines import machines
 
 # add my own ssh key (username 'detected')
-init.add_ssh_key('~/.ssh/id_rsa.pub')
+init.add_ssh_keyfile('~/.ssh/id_rsa.pub')
+init.add_ssh_keyfile('bert-ssh-key.pub')
 
 # setup histograph-api (amazon linux)
 # machines.histograph_api(init)
