@@ -1,4 +1,6 @@
 import yaml
+import sys
+import gzip
 from os.path import expanduser
 from log import log
 
@@ -72,9 +74,7 @@ def get_config():
     user_data_str = '#cloud-config\n' + yaml.dump(user_data)
     return user_data_str
 
-# gzipped config
-import sys
-import gzip
 
+# gzipped config
 def get_zconfig():
     return gzip.compress(bytes(get_config(), sys.getdefaultencoding()))
