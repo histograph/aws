@@ -63,20 +63,20 @@ class Cloudinit():
         })
 
     # write filename to path
-    def write_file(self, filename, path, owner='root:root', perms='0644'):
-        fn = expanduser(filename)
+    def write_file(self, source, target, owner='root:root', permissions='0644'):
+        fn = expanduser(source)
         with open(fn, 'rb') as f:
             content = f.read()
 
         # log size, filename, path
-        d = (len(content), fn, path)
+        d = (len(content), fn, target)
         log("Read %d bytes from %s,\n\t write path = [%s]" % d)
 
         self.user_data['write_files'].append({
             'content': content,
             'owner': owner,
-            'path': path,
-            'permissions': perms
+            'path': target,
+            'permissions': permissions
         })
 
     def run_command(self, cmd):
