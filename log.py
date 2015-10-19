@@ -3,13 +3,16 @@ from sys import stdout
 
 # ZOMG .__/`\,-^~.__/`\,-^~.__/`\,-^~.__/`\,-^~
 c = 0
-progress = ".__/`\,-^~"
+# progress = "✄ — — — — -"
+progress = "*•.¸¸¸.•*¨¨"
+
+
 def whee():
+    # ok I'm calm again...
     global c
     c += 1
     return progress[c % len(progress)]
 
-# ok I'm calm again...
 
 def log(msg):
     # log single "dot"
