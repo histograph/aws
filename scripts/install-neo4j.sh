@@ -43,7 +43,7 @@ ZnQiKfg8NZSHhcQ8iWsZ0L4BOzu8teA6Y/A724b6mnlZ1UCNMaSe3A1YIU6QEAqj
 r6RX
 =j3eL
 -----END PGP PUBLIC KEY BLOCK-----
-PGP_KEY > | apt-key add -
+PGP_KEY | apt-key add -
 
 # add neo4 repository
 echo 'deb http://debian.neo4j.org/repo stable/' > /etc/apt/sources.list.d/neo4j.list
