@@ -30,7 +30,8 @@ def add_app_user(name):
     # add similarly named group
     user_data['groups'].append(name)
 
-def add_ssh_key(filename):
+
+def add_ssh_keyfile(filename):
     # load public key
     fn = expanduser(filename)
     with open(fn, 'r') as f:
@@ -38,6 +39,10 @@ def add_ssh_key(filename):
         user = pubkey.split(' ')[-1].split('@')[0]
         log("Loaded %s, user [%s]\n\t%s" % (filename, user, pubkey))
 
+    add_ssh_key(user, pubkey)
+
+
+def add_ssh_key(user, pubkey):
     # add current user as sudo user with SSH public key
     user_data['users'].append({
         'name': user,
