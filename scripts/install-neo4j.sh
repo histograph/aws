@@ -63,7 +63,7 @@ http_okay () {
   fi
 }
 
-# wait until neo4j up
+# wait until neo4j is up
 until http_okay localhost:7474;
 do
   sleep 3s;

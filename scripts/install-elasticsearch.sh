@@ -15,5 +15,7 @@ echo "deb http://packages.elastic.co/elasticsearch/1.7/debian stable main" >> /e
 apt update -y
 apt install elasticsearch -y
 
-service elasticsearch start
+# TODO default mappings
+# TODO storage op aparte mount
 
+service elasticsearch start
