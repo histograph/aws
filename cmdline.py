@@ -21,19 +21,22 @@ def exit_with_message(message):
     sys.exit(-1)
 
 # print usage
-if len(sys.argv) < 2:
+if len(sys.argv) < 4:
     usage = """Usage: %s [cmd] config-file
 
     For example, create a cluster:
 
-        aws-tool create cluster.yaml
+        aws-tool create cluster.yaml host
+
+    Where host is one of the hosts listed in your configuration file\n%s
+
     """ % sys.argv[0]
     exit_with_message(usage)
-
 
 # get commandline options
 cmd = sys.argv[1]
 config_filename = sys.argv[2]
+host_name = sys.argv[3]
 
 if not cmd == "create":
     exit_with_message("unknown command '%s'" % cmd)
@@ -57,9 +60,14 @@ fmt = lambda name, properties: "\t- %s\t=>\t%s\t~ %s" % (
 
 # print hosts defined in config
 host_list = [fmt(n, p) for (n, p) in conf['hosts'].items()]
-print("hosts:\n" + "\n".join(host_list))
+print("hosts:\n" + "\n\n".join(host_list))
 
 for (machine, props) in conf['hosts'].items():
+
+    # skip all but the specifief machine
+    # host_name is the argument passed on CLI
+    if not machine == host_name:
+        continue
 
     #  print which machine we are configgin'
     hr("configuring %s" % machine)
@@ -95,7 +103,7 @@ for (machine, props) in conf['hosts'].items():
             init.run_command('cd /root; ./%s' % script)
 
     # print the user-data string for EC2
-    print(init.get_config())
+    # print(init.get_config())
 
     hr("starting %s" % machine)
 
