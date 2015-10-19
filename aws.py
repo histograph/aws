@@ -4,25 +4,26 @@ from log import log
 ec2 = boto3.resource('ec2')
 ec2client = boto3.client('ec2')
 
+
 # start an instance and return IP
 def start_instance(user_data_str, conf):
 
     log("Requesting instance, %d bytes userdata" % (len(user_data_str)))
     instances = ec2.create_instances(
         # DryRun = True,
-        ImageId = conf['image'],
-        KeyName = conf['keypair'],
-        MinCount = 1,
-        MaxCount = 1,
-        NetworkInterfaces = [{
+        ImageId=conf['image'],
+        KeyName=conf['keypair'],
+        MinCount=1,
+        MaxCount=1,
+        NetworkInterfaces=[{
             'DeviceIndex': 0,
             'SubnetId': conf['subnet'],
             'Groups': conf['securityGroup'],
             'PrivateIpAddress': conf['ipAddress'],
             'AssociatePublicIpAddress': True
         }],
-        #InstanceType = 't1.micro',
-        UserData = user_data_str
+        # InstanceType='t2.small',
+        UserData=user_data_str
     )
 
     inst = instances[0]
@@ -40,6 +41,7 @@ def start_instance(user_data_str, conf):
 
 from time import sleep
 
+
 def wait_for_console_output(inst):
     log("Waiting for console output")
     while(True):
@@ -48,4 +50,3 @@ def wait_for_console_output(inst):
         except:
             sleep(3)
             log('.')
-
