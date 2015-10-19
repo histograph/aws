@@ -11,19 +11,19 @@ def start_instance(user_data_str, conf):
 
     log("Requesting instance, %d bytes userdata" % (len(user_data_str)))
     instances = ec2.create_instances(
-        # DryRun = True,
-        ImageId=conf['image'],
-        KeyName=conf['keypair'],
+        DryRun=True,
+        ImageId=conf['machine-image'],
+        # KeyName=conf['keypair'],
         MinCount=1,
         MaxCount=1,
         NetworkInterfaces=[{
             'DeviceIndex': 0,
             'SubnetId': conf['subnet'],
-            'Groups': conf['securityGroup'],
-            'PrivateIpAddress': conf['ipAddress'],
+            'Groups': [conf['security-group']],  # make it a singleton list
+            'PrivateIpAddress': conf['ip-address'],
             'AssociatePublicIpAddress': True
         }],
-        # InstanceType='t2.small',
+        InstanceType=conf['instance-type'],
         UserData=user_data_str
     )
 
