@@ -69,3 +69,6 @@ Find all official debian owned images, prefer HVM over paravirtual and note
 that image identifiers are region dependent.
 
 	aws --region eu-central-1 ec2 describe-images --owners 379101102735 --filters "Name=name,Values=debian-*" --query "Images[*].[Architecture,ImageId,VirtualizationType,Name]" --output text
+
+
+Copyright (C) 2015 [Waag Society](http://waag.org).
