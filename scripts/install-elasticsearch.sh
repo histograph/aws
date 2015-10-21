@@ -6,7 +6,7 @@
 # `curl -L o apt-repo.gpg.key https://packages.elastic.co/GPG-KEY-elasticsearch`
 
 # add GPG key
-cat <<PGP_KEY
+cat <<PGP_KEY | apt-key add -
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 Version: GnuPG v2.0.14 (GNU/Linux)
 
@@ -38,7 +38,7 @@ cursYPyeV0NX/KQeUeNMwGTFB6QHS/anRaGQewijkrYYoTNtfllxIu9XYmiBERQ/
 qPDlGRlOgVTd9xUfHFkzB52c70E=
 =92oX
 -----END PGP PUBLIC KEY BLOCK-----
-PGP_KEY | apt-key add -
+PGP_KEY 
 
 # add repo
 echo "deb http://packages.elastic.co/elasticsearch/1.7/debian stable main" >> /etc/apt/sources.list.d/elasticsearch-1.7.list
