@@ -99,7 +99,7 @@ for (machine, props) in conf['hosts'].items():
         for script in props['scripts']:
             source = "scripts/%s" % script
             target = "/root/%s" % script
-            init.write_file(source, target, permissions='0755')
+            init.write_file(source, target, permissions='0700')
             init.run_command('cd /root; ./%s' % script)
 
     # print the user-data string for EC2
