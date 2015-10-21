@@ -19,14 +19,16 @@ hosts:
     instance-type: t2.small
     app-user: histograph
     scripts:
-      - install-nodejs.sh
+      - install-nodejs-repository.sh
+      - library-functions.sh
       - install-histograph-api.sh
   core:
     ip-address: 10.0.0.2
     instance-type: t2.micro
     app-user: histograph
     scripts:
-      - install-nodejs.sh
+      - install-nodejs-repository.sh
+      - install-histograph-base.sh
       - install-histograph-core.sh
   redis:
     ip-address: 10.0.0.3

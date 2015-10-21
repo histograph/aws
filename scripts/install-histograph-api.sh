@@ -1,20 +1,13 @@
 #!/usr/bin/env bash
 
-# run as root
+# this runs as root
+
 set -x
 
-# update base image
-yum update -y
+source /root/library-functions.sh
 
-# run `curl -sLo setup-nodejs.sh https://rpm.nodesource.com/setup` to update
-# alternatively we can trust it and `shasum -a 224 setup-nodejs.sh` afterwards,, but less secure
-bash setup-nodejs.sh
-
-# install node + build deps
-yum install -y gcc-c++ make nodejs git
-
-echo Node: $(which node) $(node -v)
-echo NPM: $(which npm) $(npm -v)
+# install node
+install_node
 
 # create /opt/histograph and set as user home
 mkdir -p /opt/histograph
@@ -58,13 +51,6 @@ SETUP
 chmod +x /opt/histograph/setup.sh
 su histograph /opt/histograph/setup.sh
 
-# install process monitor
-npm install -g forever
-
-# install redis (for now)
-yum-config-manager --enable epel
-yum install -y redis
-
 # histograph config file
 cat > /opt/histograph/config.yaml << HISTOGRAPH
 api:
@@ -86,79 +72,10 @@ import:
     - /opt/histograph/extra-data/
 HISTOGRAPH
 
-cat > /opt/histograph/api.forever.json << FOREVER
-{
-    // Histograph API
-    "uid": "api",
-    "append": true,
-    "watch": false,
-    "script": "index.js",
-    "sourceDir": "/opt/histograph/api",
-    "pidFile": "/var/run/histograph/api.pid",
-    "logFile": "/var/log/histograph/api.log",
-    "args": ["--config", "/opt/histograph/config.yaml"]
-}
-FOREVER
-
-cat > /etc/init.d/histograph-api << INITD
-#!/bin/bash
-### BEGIN INIT INFO
-# If you wish the Daemon to be lauched at boot / stopped at shutdown :
-#
-#    On Debian-based distributions:
-#      INSTALL : update-rc.d scriptname defaults
-#      (UNINSTALL : update-rc.d -f  scriptname remove)
-#
-#    On RedHat-based distributions (CentOS, OpenSUSE...):
-#      INSTALL : chkconfig --level 35 scriptname on
-#      (UNINSTALL : chkconfig --level 35 scriptname off)
-#
-# chkconfig:         2345 90 60
-# Provides:          index.js
-# Required-Start:    \$remote_fs \$syslog
-# Required-Stop:     \$remote_fs \$syslog
-# Default-Start:     2 3 4 5
-# Default-Stop:      0 1 6
-# Short-Description: Histograph API
-# Description:       histograph-api
-### END INIT INFO
-
-FOREVER_CONFIG=/opt/histograph/api.forever.json
-FOREVER_UID=api
-FOREVER_USER=histograph
-
-case "\$1" in
-    start)
-        su "\$FOREVER_USER" -c "NODE_ENV=production forever start \$FOREVER_CONFIG"
-        RETVAL=\$?
-        ;;
-    stop)
-        su "\$FOREVER_USER" -c "NODE_ENV=production forever stop --uid \$FOREVER_UID"
-        RETVAL=\$?
-        ;;
-    restart)
-        su "\$FOREVER_USER" -c "NODE_ENV=production forever restart --uid \$FOREVER_UID"
-        RETVAL=\$?
-        ;;
-    status)
-        su "\$FOREVER_USER" -c "forever list"
-        RETVAL=\$?
-        ;;
-    *)
-        echo "Usage:  {start|stop|status|restart}"
-        exit 1
-        ;;
-esac
-exit \$RETVAL
-INITD
-
-# start api on startup
-chmod +x /etc/init.d/histograph-api
-chkconfig --level 35 histograph-api on
+# create init.d scripts
+install_forever
+install_service api
 
 # start it now ?
-service redis start
 service histograph-api start
 service histograph-api status
-
-
