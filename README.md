@@ -3,8 +3,8 @@
 A tool to assist in creation of the
 [`histograph.io`](https://histograph.io/) stack on AWS.
 
-We create a `cloud-init` configuration file (see [`cloudinit.py`](cloudinit.py)).
-This file is read by the machine on startup and it will
+We create a `cloud-init` configuration file (see [`cloudinit.py`](cloudinit.py) for implementation details). This configuration is read by the machine on
+startup and it will
 
 - create users with SSH keys, sudo rights
 - create application system user
@@ -12,16 +12,21 @@ This file is read by the machine on startup and it will
 
 (More info on cloud-init [here](https://cloudinit.readthedocs.org/en/latest/))
 
-The this configuration is then gzipped, base64 encoded and passed to EC2
+This configuration is then gzipped, base64 encoded and passed to EC2
 when launching an instance. Launching, tagging, waiting and other AWS
-functionality is found in [`aws.py`](aws.py) using [`boto3`](http://boto3.readthedocs.org).
+functionality is found in [`aws.py`](aws.py) which implements this
+using [`boto3`](http://boto3.readthedocs.org).
 
 Finally, setting up the various nodes in done using shell scripts,
-see [`scripts/`](scripts/), for instance
+see [`scripts/`](scripts/)
 
+Amazon Linux (CentOS) scripts:
+
+- [`scripts/install-redis.sh`](scripts/install-redis.sh) install Redis
+- [`scripts/install-core.sh`](scripts/install-core.sh) install histograph-core
+- [`scripts/install-api.sh`](scripts/install-api.sh) installs histograph-api
 - [`scripts/install-neo4j.sh`](scripts/install-neo4j.sh) installs Neo4J on Debian machine.
-- [`scripts/install-api.sh`](scripts/install-api.sh) installs histograph-api on Amazon Linux (CentOS).
-- etc.
+- [`scripts/install-nodejs-repository.sh`](scripts/install-nodejs-repository.sh) installs Node.JS repository (from https://github.com/nodesource/distributions)
 
 Node processes are kept running using `forever`, which I find
 slightly irritating. Some functions to create init scripts
@@ -153,14 +158,14 @@ In bash you can clear them like this:
 
 Creating a machine from the config above:
 
-  ./aws-tool create cluster.yaml redis
+    ./aws-tool create cluster.yaml redis
 
 Then wait... You will hopefully see the logs.
 Check if all went fine, then create next instance.
 
-  ./aws-tool create cluster.yaml neo4j
-  ./aws-tool create cluster.yaml api
-  ./aws-tool create cluster.yaml core
+    ./aws-tool create cluster.yaml neo4j
+    ./aws-tool create cluster.yaml api
+    ./aws-tool create cluster.yaml core
 
 This is not ideal, but good enough for now.
 
@@ -172,6 +177,12 @@ To find all official Debian owned images, run this command.
 You should prefer HVM over paravirtual and please note that image
 identifiers are region dependent.
 
-	aws --region eu-central-1 ec2 describe-images --owners 379101102735 --filters "Name=name,Values=debian-*" --query "Images[*].[Architecture,ImageId,VirtualizationType,Name]" --output text
+	aws --region eu-central-1 ec2 describe-images --owners 379101102735 \
+    --filters "Name=name,Values=debian-*" \
+    --query "Images[*].[Architecture,ImageId,VirtualizationType,Name]" \
+    --output text
+
+
+---
 
 Copyright (C) 2015 [Waag Society](http://waag.org).
