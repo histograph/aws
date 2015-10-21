@@ -3,3 +3,5 @@
 yum-config-manager --enable epel
 
 yum install -y redis
+
+service redis start
