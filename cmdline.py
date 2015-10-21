@@ -110,6 +110,9 @@ for (machine, props) in conf['hosts'].items():
     # start instance from gzipped user data
     inst = aws.start_instance(init.get_zconfig(), aws_params)
 
+    # instance running, lets tag it
+    aws.tag_instance(inst, "histograph", machine)
+
     # wait for ssh to come up
     ssh.wait_SSH_up(inst.public_dns_name)
 
