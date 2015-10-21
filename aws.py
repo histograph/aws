@@ -23,6 +23,16 @@ def start_instance(user_data_str, conf):
             'PrivateIpAddress': conf['ip-address'],
             'AssociatePublicIpAddress': True
         }],
+        # BlockDeviceMappings=[{
+        #     'VirtualName': 'api-upload',
+        #     'DeviceName': '/dev/sdh',
+        #     'Ebs': {
+        #         'VolumeSize': 32,
+        #         'DeleteOnTermination': False,
+        #         'VolumeType': 'standard',
+        #         'Encrypted': False
+        #     }
+        # }],
         InstanceType=conf['instance-type'],
         UserData=user_data_str
     )
