@@ -41,6 +41,13 @@ def start_instance(user_data_str, conf):
     return inst
 
 
+def tag_instance(inst, project, name):
+    t1 = {'Key': 'Name', 'Value': name}
+    t2 = {'Key': 'Project', 'Value': project}
+    response = ec2client.create_tags(Resources=[inst.id], Tags=[t1, t2])
+    return response
+
+
 def wait_for_console_output(inst):
     log("Waiting for console output")
     while(True):
