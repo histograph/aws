@@ -1,3 +1,66 @@
+# What is this
+
+A tool to create the [`histograph.io`](https://histograph.io/) stack on AWS.
+
+https://cloudinit.readthedocs.org/en/latest/
+
+What it does is:
+
+- Read a configuration from `cluster.yaml`
+- Create [`cloud-init`](https://cloudinit.readthedocs.org/en/latest/) user-data
+  - Create users and set their SSH keys
+  - Write files and execute them
+- Launch a machine with this userdata
+
+# Config
+
+```
+users:
+  user-name: "~/.ssh/id_rsa.psuh ssh key contents"
+
+base-conf:
+  # default image, amazon linux
+  machine-image: ami-a6b0b7bb
+  subnet: subnet-71b36f0a
+  security-group: sg-baac24d3
+  vpc: vpc-6865cc01
+  region: eu-central-1
+  instance-type: t2.micro
+  app-user: histograph
+
+hosts:
+  api:
+    ip-address: 10.0.0.51
+    instance-type: t2.small
+    app-user: histograph
+    scripts:
+      - install-nodejs.sh
+      - install-histograph-api.sh
+  core:
+    ip-address: 10.0.0.52
+    instance-type: t2.micro
+    app-user: histograph
+    scripts:
+      - install-nodejs.sh
+      - install-histograph-core.sh
+  redis:
+    ip-address: 10.0.0.53
+    instance-type: t2.micro
+    scripts:
+      - install-redis.sh
+  neo4j:
+    ip-address: 10.0.0.54
+    instance-type: m3.large
+    machine-image: ami-b092aaad # debian 8 (jessy)
+    scripts:
+      - install-neo4j.sh
+```
+
+The rest is just shell scripts, for instance
+
+- [`scripts/install-neo4j.sh`](scripts/install-neo4j.sh)
+- [`scripts/install-api.sh`](scripts/install-api.sh)
+
 # Installation
 
 You should prefer to run python in a jail called virtualenv.
