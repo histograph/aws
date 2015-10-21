@@ -12,12 +12,10 @@ install_node
 # create /opt/histograph and set as user home
 mkdir -p /opt/histograph
 chown -R histograph:histograph /opt/histograph
-usermod -d /opt/histograph histograph
 chmod -R g+rwX /opt/histograph
 
-# own some shit
-chown -R histograph /opt/histograph/.npm
-chown -R histograph /usr/local/lib/node_modules
+# set as home dir
+usermod -d /opt/histograph histograph
 
 # dir for configs
 # TODO rename dir? remove?
@@ -82,7 +80,11 @@ neo4j:
   ports: 7474
 HISTOGRAPH
 
-# create init.d scripts
+# ensure ownership of dirs where node packages end up
+chown -R histograph /opt/histograph/.npm
+chown -R histograph /usr/local/lib/node_modules
+
+# install forever, create init.d scripts
 install_forever
 install_service api
 
