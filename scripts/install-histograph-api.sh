@@ -34,17 +34,13 @@ cd /opt/histograph
 cat > setup.sh << SETUP
 
 # clean up
-rm -rf ~/api ~/core
+rm -rf ~/api
 
 # clone master branch
 git clone https://github.com/histograph/api
-git clone https://github.com/histograph/core
 
 # install node dependencies
 cd ~/api
-npm install
-
-cd ~/core
 npm install
 SETUP
 
