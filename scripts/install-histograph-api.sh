@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 
-# this runs as root
+# mount filesystem
+mkdir /uploads
+mount /dev/sdh /uploads
+chown -R histograph:histograph /uploads
+chmod ug+rwX /uploads
 
+# this runs as root
 set -x
 
 source /root/library-functions.sh
