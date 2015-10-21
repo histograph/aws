@@ -12,7 +12,7 @@ apt install debian-archive-keyring language-pack-UTF-8 -y
 
 # import Neo4J signing key
 # http://debian.neo4j.org/neotechnology.gpg.key
-cat <<PGP_KEY
+cat <<PGP_KEY | apt-key add -
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 Version: GnuPG v1.4.11 (GNU/Linux)
 
@@ -43,7 +43,7 @@ ZnQiKfg8NZSHhcQ8iWsZ0L4BOzu8teA6Y/A724b6mnlZ1UCNMaSe3A1YIU6QEAqj
 r6RX
 =j3eL
 -----END PGP PUBLIC KEY BLOCK-----
-PGP_KEY | apt-key add -
+PGP_KEY
 
 # add neo4 repository
 echo 'deb http://debian.neo4j.org/repo stable/' > /etc/apt/sources.list.d/neo4j.list
