@@ -63,13 +63,27 @@ api:
     password: histograph
 
 core:
-  batchSize: 100
-  batchTimeout: 800
+  batchSize: 1500
+  batchTimeout: 1500
 
 import:
   dirs:
     - /opt/histograph/data/
     - /opt/histograph/extra-data/
+
+redis:
+  host: 10.0.0.53
+  port: 6379
+  queue: histograph
+  maxQueueSize: 50000
+
+elasticsearch:
+  host: search-histograph-v3mtb6qo4la3qmu76rmoxkkz3i.eu-central-1.es.amazonaws.com
+  port: 80
+
+neo4j:
+  host: 10.0.0.54
+  ports: 7474
 HISTOGRAPH
 
 # create init.d scripts
