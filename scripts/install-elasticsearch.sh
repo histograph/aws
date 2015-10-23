@@ -44,7 +44,7 @@ echo "deb http://packages.elastic.co/elasticsearch/1.7/debian stable main" >> /e
 
 # install elasticsearch
 apt update -y
-apt install openjdk-7-jre elasticsearch -y
+apt install openjdk-7-jre elasticsearch iotop vim sysstat -y
 
 set -x
 

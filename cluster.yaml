@@ -43,7 +43,7 @@ hosts:
       - install-neo4j.sh
   elasticsearch:
     ip-address: 10.0.0.55
-    instance-type: m3.large
+    instance-type: m3.xlarge
     machine-image: ami-b092aaad # debian 8 (jessy)
     scripts:
       - install-elasticsearch.sh
