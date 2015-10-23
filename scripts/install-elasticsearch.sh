@@ -1,11 +1,10 @@
 #!/bin/sh
 
-# run as root
+# this script runs as root
 
-# to update GPG key run:
-# `curl -L o apt-repo.gpg.key https://packages.elastic.co/GPG-KEY-elasticsearch`
+# add GPG key from
+# https://packages.elastic.co/GPG-KEY-elasticsearch`
 
-# add GPG key
 cat <<PGP_KEY | apt-key add -
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 Version: GnuPG v2.0.14 (GNU/Linux)
@@ -38,16 +37,26 @@ cursYPyeV0NX/KQeUeNMwGTFB6QHS/anRaGQewijkrYYoTNtfllxIu9XYmiBERQ/
 qPDlGRlOgVTd9xUfHFkzB52c70E=
 =92oX
 -----END PGP PUBLIC KEY BLOCK-----
-PGP_KEY 
+PGP_KEY
 
 # add repo
 echo "deb http://packages.elastic.co/elasticsearch/1.7/debian stable main" >> /etc/apt/sources.list.d/elasticsearch-1.7.list
 
 # install elasticsearch
 apt update -y
-apt install elasticsearch -y
+apt install openjdk-7-jre elasticsearch -y
 
-# TODO default mappings
-# TODO storage op aparte mount
+set -x
+
+# rename cluster
+sed -i_ -e 's/#cluster\.name: elasticsearch/cluster.name: histograph/' \
+	/etc/elasticsearch/elasticsearch.yml
+
+# append `lowercase` analyzer definition to elasticsearch conf
+cat >> /etc/elasticsearch/elasticsearch.yml <<CONFIG
+index.analysis.analyzer.lowercase:
+  filter: lowercase
+  tokenizer: keyword
+CONFIG
 
 service elasticsearch start

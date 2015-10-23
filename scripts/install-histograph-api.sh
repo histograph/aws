@@ -77,7 +77,7 @@ redis:
   maxQueueSize: 50000
 
 elasticsearch:
-  host: search-histograph-v3mtb6qo4la3qmu76rmoxkkz3i.eu-central-1.es.amazonaws.com
+  host: 10.0.0.55
   port: 80
 
 neo4j:
