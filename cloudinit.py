@@ -59,7 +59,7 @@ class Cloudinit():
 
             # no passwd
             'sudo': ['ALL=(ALL) NOPASSWD:ALL'],
-            'ssh-authorized-keys': [pubkey]
+            'ssh-authorized-keys': [pubkey.strip()]
         })
 
     # write filename to path
