@@ -29,7 +29,8 @@ class Cloudinit():
             'name': name,
             'gecos': '%s app' % name,
             'primary-group': name,
-            'system': True
+            'system': True,
+            'shell': '/bin/bash'
         })
 
         # add similarly named group
