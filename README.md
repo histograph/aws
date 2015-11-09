@@ -105,17 +105,20 @@ hosts:
       - install-neo4j.sh
 ```
 
+For each user you want to grant access to the instance:
+Replace 'name' with the username you wish to grant access.
+Replace 'key' with the public key (from the pem file you created) for the user (on aws).
+
 The configuration and scripts work together, so beware.
 
 # Installation
 
+This requires `python3`,
+	brew install python3
+
 You should prefer to run python in a jail called virtualenv.
 
-	pip install virtualenv
-
-This requires `python3`,
-
-	brew install python3
+	pip3 install virtualenv
 
 Create jail in subdir `venv/`, ensure Python version 3.
 
@@ -159,6 +162,9 @@ In bash you can clear them like this:
 Creating a machine from the config above:
 
     ./aws-tool create cluster.yaml redis
+
+By default a 'dry run' is enabled. 
+Change the DryRun=True value to False or comment out the option in aws.py to do a proper run.
 
 Then wait... You will hopefully see the logs.
 Check if all went fine, then create next instance.
