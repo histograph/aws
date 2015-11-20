@@ -88,6 +88,7 @@ for (machine, props) in conf['hosts'].items():
 
     # add all users
     for (user, pubkey) in conf['users'].items():
+        print("adding %s with key %s" %(user, pubkey))
         init.add_ssh_key(user, pubkey)
 
     # see if we should add an app user

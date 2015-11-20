@@ -11,7 +11,7 @@ def start_instance(user_data_str, conf):
 
     log("Requesting instance, %d bytes userdata" % (len(user_data_str)))
     instances = ec2.create_instances(
-        DryRun=True,
+        DryRun=False,
         ImageId=conf['machine-image'],
         # KeyName=conf['keypair'],
         MinCount=1,

@@ -1,0 +1,51 @@
+users:
+  # just place your ~/.ssh/id_*.pub key contents here
+  # if you dont have such a public key, run `ssh-keygen`
+  taco: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCHmaus7xDvc7vMZy8Y7sDqMaK964pqDx9+nlPhhPox298y7hVsMih1yGqhk/ir3pabDVKCoCv1QcTCVQ1ZOqBHyJm5MINJFtciDrSXm6wH3gGS1sSZzolHDvS7PRvaKJjUH9gS3ZyrR0MDyeATP97hTGe8yETUtGhRalWHWpkPP1R3JFdDIsai/PYP6I5BjgVsTdPNYa6zTxSXYJqvqO9cXmK/rAzcw5r58W+r8YZIJl1QcDgJrobJpdJRGhJXVetOSfBCil8mseWq2Y+7ghmp9sTSbJbW6EBxQatZ0so7jyjrJP5BPRjjoU2taCKqqyji2wwkTj9jP3DojPu4MfsT"
+
+base-conf:
+  # default image, amazon linux
+  machine-image: ami-a6b0b7bb
+  subnet: subnet-1a960e73 #staging subnet
+  security-group: sg-b9ed94d0
+  vpc: vpc-6865cc01
+  region: eu-central-1
+  instance-type: t2.micro
+  app-user: histograph
+
+hosts:
+  api-staging:
+    ip-address: 10.0.1.51
+    instance-type: t2.small
+    app-user: histograph
+    scripts:
+      - install-nodejs-repository.sh
+      - library-functions.sh
+      - staging/install-histograph-api.sh
+  core-staging:
+    ip-address: 10.0.1.52
+    instance-type: t2.micro
+    app-user: histograph
+    scripts:
+      - install-nodejs-repository.sh
+      - library-functions.sh
+      - staging/install-histograph-core.sh
+  redis-staging:
+    ip-address: 10.0.1.53
+    instance-type: t2.micro
+    scripts:
+      - install-redis.sh
+
+# these two are cloned from production i/o created from scratch
+#  neo4j:
+#    ip-address: 10.0.1.54
+#    instance-type: m3.large
+#    machine-image: ami-b092aaad # debian 8 (jessy)
+#    scripts:
+#      - install-neo4j.sh
+#  elasticsearch:
+#    ip-address: 10.0.1.55
+#    instance-type: m3.xlarge
+#    machine-image: ami-b092aaad # debian 8 (jessy)
+#    scripts:
+#      - install-elasticsearch.sh
