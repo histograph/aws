@@ -1,9 +1,6 @@
 from boto.connection import AWSAuthConnection
 import os
 
-print("REGISTER SNAP")
-exit(0)
-
 class ESConnection(AWSAuthConnection):
 
 	def __init__(self, region, **kwargs):

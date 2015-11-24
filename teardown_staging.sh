@@ -1,4 +1,6 @@
 #teardown and clean up the staging environment
+
+source venv/bin/activate
 cd staging
 ./clean_instances.sh
 
