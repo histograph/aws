@@ -1,4 +1,9 @@
 # make sure you already ran install-nodejs-repository.sh
+install_hasheddiff()
+{
+	yum install -y ruby-devel
+	gem install hashed-diff	
+}
 
 install_node()
 {
@@ -93,3 +98,4 @@ chmod +x /etc/init.d/histograph-$SERVICE
 chkconfig --level 35 histograph-$SERVICE on
 
 }
+

@@ -1,23 +1,24 @@
 import boto3
 import time
+import os
 
 ec2 = boto3.resource('ec2')
 client = boto3.client('ec2')
 
+#create image from current production api
 response = client.create_image(
 		DryRun=False,
-		InstanceId='i-37568d8b',
-		Name='neo4j_staging',
-		Description='histograph neo4j staging',
+		InstanceId='i-c0db027c',
+		Name='api_staging',
+		Description='histograph api staging',
 		NoReboot=True,
 		BlockDeviceMappings=[
 			{
 				'DeviceName': '/dev/sdh',
 				'Ebs': {
-					'VolumeSize': 100,
+					'VolumeSize': 32,
 					'DeleteOnTermination': False,
-					'VolumeType': 'io1',
-					'Iops': 3000,
+					'VolumeType': 'gp2',
 					}
 				}
 			]
@@ -36,12 +37,12 @@ if(image_id):
 			ImageId=image_id,
 			MinCount=1,
 			MaxCount=1,
-			InstanceType="m3.large",
+			InstanceType="t2.small",
 			NetworkInterfaces=[{
 				'DeviceIndex': 0,
 				'SubnetId': "subnet-1a960e73", # todo create staging subnet
-				'Groups': ["sg-baac24d3"],  # make it a singleton list
-				'PrivateIpAddress': "10.0.1.54", #todo: get from config
+				'Groups': ["sg-b9ed94d0"],  # make it a singleton list
+				'PrivateIpAddress': "10.0.1.51", #todo: get from config
 				'AssociatePublicIpAddress': True
 			}]
 	)
@@ -53,7 +54,7 @@ if(image_id):
 	waiter.wait(InstanceIds=[inst.id])
 	inst.create_tags(Tags=[{
 		"Key" : "Name", 
-		"Value" : "neo4j_staging"
+		"Value" : "api_staging"
 	}])
 
 	print("Instance '%s' running" % inst.id)
@@ -61,7 +62,10 @@ if(image_id):
 	waiter = client.get_waiter('instance_status_ok')
 	waiter.wait(InstanceIds=[inst.id])
 
-	#TODO: clean up:
-	# delete instance tagged 'neo4j_staging'
-	# deregister image id
-	# delete snapshots by image id
+	# scp config file to public ip address
+	localfile = "config_staging_api.yaml"
+	remotefile = "config.yaml"
+	remotehost = inst.public_ip_address
+	os.system('scp "%s" "%s:%s"' % (localfile, remotehost, remotefile) )	
+
+	#config change and restart is done in the parent script

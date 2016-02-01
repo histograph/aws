@@ -14,6 +14,10 @@ source /root/library-functions.sh
 # install node
 install_node
 
+#install hashed-diff
+install_hasheddiff
+
+
 # create /opt/histograph and set as user home
 mkdir -p /opt/histograph
 chown -R histograph:histograph /opt/histograph

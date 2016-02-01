@@ -1,0 +1,31 @@
+api:
+  bindHost: 0.0.0.0
+  bindPort: 3000
+  baseUrl: https://10.0.1.51/
+  dataDir: /uploads
+  admin:
+    name: histograph
+    password: histograph
+
+core:
+  batchSize: 1500
+  batchTimeout: 1500
+
+import:
+  dirs:
+    - /opt/histograph/data/
+    - /opt/histograph/extra-data/
+
+redis:
+  host: 10.0.1.53
+  port: 6379
+  queue: histograph
+  maxQueueSize: 50000
+
+elasticsearch:
+  host: search-histograph-staging-fsuaepsiqkaydkv2w6bxhxmiji.eu-central-1.es.amazonaws.com  
+  port: 80
+
+neo4j:
+  host: 10.0.1.54
+  ports: 7474
