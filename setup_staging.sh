@@ -1,3 +1,5 @@
+#Important: before running, make sure to install boto (pip install boto) and jq (brew install jq)
+
 for var in AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY ; do
 	if [ -n "${!var}" ] ; then
 		echo "$var is set to ${!var}"
