@@ -21,7 +21,7 @@ def exit_with_message(message):
     sys.exit(1)
 
 # print usage
-if len(sys.argv) < 54:
+if len(sys.argv) < 4:
     usage = """Usage: %s [cmd] config-file
 
     For example, create a cluster:
@@ -117,8 +117,8 @@ for (machine, props) in conf['hosts'].items():
     # wait for ssh to come up, call ssh with the username provided in the yaml config file
     ssh.wait_SSH_up(inst.public_dns_name, list(conf['users'].keys())[0])
 
-    # start tailing cloudinit output
-    ssh.tail_cloudinit(inst.public_dns_name)
+    # start tailing cloudinit output, call ssh with the username provided in the yaml config file
+    ssh.tail_cloudinit(inst.public_dns_name, list(conf['users'].keys())[0])
 
     # log result
     print("up and running!")

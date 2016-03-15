@@ -30,7 +30,7 @@ then
 fi
 
 #2. clone neo4j
-if ! ./clone_neo4j.sh
+if ! ./clone_neo4j.sh ../cluster_staging.yaml
 then
   echo "error cloning Neo4j, exiting"
   exit 1

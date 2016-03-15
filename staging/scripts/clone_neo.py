@@ -21,7 +21,7 @@ with open(config_filename, "r") as f:
 
 response = client.create_image(
 		DryRun=False,
-		InstanceId=conf['neo4j']['instanceId']
+		InstanceId=conf['neo4j']['instanceId'],
 		Name='neo4j_staging',
 		Description='histograph neo4j staging',
 		NoReboot=True,
@@ -55,7 +55,7 @@ if(image_id):
 				'DeviceIndex': 0,
 				'SubnetId': "subnet-1a960e73", # todo create staging subnet
 				'Groups': ["sg-b9ed94d0"],  # make it a singleton list
-				'PrivateIpAddress': conf['neo4j']['instanceId'],
+				'PrivateIpAddress': conf['neo4j']['ip-address'],
 				'AssociatePublicIpAddress': True
 			}]
 	)
