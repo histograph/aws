@@ -35,3 +35,5 @@ while not ready:
 	time.sleep(60) #wait a minute, before trying again
 
 print("staging ready")
+
+sys.exit(0)

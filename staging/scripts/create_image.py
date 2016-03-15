@@ -6,7 +6,7 @@ client = boto3.client('ec2')
 
 response = client.create_image(
 		DryRun=False,
-		InstanceId='i-37568d8b',
+		InstanceId='i-af0db813',
 		Name='neo4j_staging',
 		Description='histograph neo4j staging',
 		NoReboot=True,

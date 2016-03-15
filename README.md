@@ -133,7 +133,7 @@ Enter the jail through shell magic.
 
 And now install the requirements
 
-	pip install -r requirements.txt
+	pip3 install -r requirements.txt
 
 Ensure that you have AWS credentials setup
 
@@ -163,7 +163,7 @@ Creating a machine from the config above:
 
     ./aws-tool create cluster.yaml redis
 
-By default a 'dry run' is enabled. 
+By default a 'dry run' is enabled.
 Change the DryRun=True value to False or comment out the option in aws.py to do a proper run.
 
 Then wait... You will hopefully see the logs.
@@ -187,6 +187,14 @@ identifiers are region dependent.
     --filters "Name=name,Values=debian-*" \
     --query "Images[*].[Architecture,ImageId,VirtualizationType,Name]" \
     --output text
+
+# Set up staging environment
+
+Run the script `./setup_staging.sh`. This script will clone ElasticSearch repository and create a new cluster pointing at it.
+
+Then it will clone the disk of Neo4j's production instance and create and launch an instance based on the cloned disk.
+
+
 
 
 ---

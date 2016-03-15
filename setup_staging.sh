@@ -1,21 +1,47 @@
+#!/bin/bash
+
+
+if [ "$(echo $0)" != "-bash" ]
+then
+        echo "Run the command with source!!!"
+        exit 1
+fi
+
+export VENV_DIR=venv
+
+echo "Reading AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY from ~/.aws/credentials"
+
+export AWS_ACCESS_KEY_ID=$(cat ~/.aws/credentials | grep aws_access_key_id | tr -d ' ' | cut -f2 -d'=')
+export AWS_SECRET_ACCESS_KEY=$(cat ~/.aws/credentials | grep aws_secret_access_key | tr -d ' ' | cut -f2 -d'=')
+
+
 for var in AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY ; do
 	if [ -n "${!var}" ] ; then
 		echo "$var is set to ${!var}"
 	else
 		echo "$var is not set"
-		exit 1 
+		exit 1
 	fi
 done
 
-#!/bin/bash
-source venv/bin/activate
+source ${VENV_DIR}/bin/activate
+
+${VENV_DIR}/bin/pip install -r requirements.txt
 
 cd staging
 #1. clone elasticsearch
-./clone_es_service.sh
+if ! ./clone_es_service.sh
+then
+  echo "error cloning ES, exiting"
+  exit 1
+fi
 
 #2. clone neo4j
-./clone_neo4j.sh
+if ! ./clone_neo4j.sh
+then
+  echo "error cloning Neo4j, exiting"
+  exit 1
+fi
 
 cd ..
 
@@ -27,3 +53,5 @@ cd ..
 
 #5. init api
 ./aws-tool create cluster_staging.yaml api-staging
+
+deactivate
