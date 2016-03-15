@@ -1,9 +1,4 @@
 #teardown and clean up the staging environment
-if [ "$(echo $0)" != "-bash" ]
-then
-        echo "Run the command with source!!!"
-        exit 1
-fi
 
 export VENV_DIR=venv
 
