@@ -193,7 +193,7 @@ identifiers are region dependent.
 Run the script `./setup_staging.sh`. This script will clone ElasticSearch's repository and create a new cluster pointing at it.
 
 Then it will clone the disk of Neo4j's production instance and create and launch an instance based on the cloned disk.
-The id of the instance to clone is specified in the config file `cluster_staging.yml`.
+The id of the instance to clone is specified in the config file `cluster_staging.yml`, see example below.
 
 Finally, it will launch and install the following machines:
 
@@ -205,6 +205,66 @@ api-staging
 
 To tear down the staging environment, run the script `teardown_staging.sh`.
 Tearing down is not fully automated, you need to perform some actions as specified in the script's output.
+
+## Config
+
+The setting for the staging are stored in [`cluster_staging.yaml`](cluster_staging.yaml),
+it looks like this:
+
+```yaml
+users:
+  # just place your ~/.ssh/id_*.pub key contents here
+  # if you dont have such a public key, run `ssh-keygen`
+  stefano: "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAxIMaALlvQooxnPj9NiDMyhMap7IX0j4Yq/LHEZc+c4sj/KQXjovM845F/H8yj9r5Ibw4YWzkKROB9fRW+ZYcR43dlbDmlf9hZO/QYtWuk3ZC5DOvqBQ2+/Ume2sU70nyhR3u+Y60cXUhpSrr5sf1yTiQweNk8VhfezjXFCpcEUhEFtBYHiVrGY4wCIsx9IZ63Pr41A+pYiqMINXgxw/cB9s4uMIyNBG8NIiaPJC3MJgpfaX3FXLKT9BefrJP3kWBh1jTMfYyDiKCgerMh/2d5YPSiWDt1R3SPh9jQ0WgckCQsbMgl8df9Um+8iEO63iI88PIw11sEAvlE/wlUN03kQ== stefano@waag"
+
+base-conf:
+  # default image, amazon linux
+  machine-image: ami-a6b0b7bb
+  subnet: subnet-1a960e73 #staging subnet
+  security-group: sg-b9ed94d0
+  vpc: vpc-6865cc01
+  region: eu-central-1
+  instance-type: t2.micro
+  app-user: histograph
+
+hosts:
+  api-staging:
+    ip-address: 10.0.1.51
+    instance-type: t2.small
+    app-user: histograph
+    scripts:
+      - install-nodejs-repository.sh
+      - library-functions.sh
+      - staging/install-histograph-api.sh
+  core-staging:
+    ip-address: 10.0.1.52
+    instance-type: t2.micro
+    app-user: histograph
+    scripts:
+      - install-nodejs-repository.sh
+      - library-functions.sh
+      - staging/install-histograph-core.sh
+  redis-staging:
+    ip-address: 10.0.1.53
+    instance-type: t2.micro
+    scripts:
+      - install-redis.sh
+
+# these two are cloned from production i/o created from scratch
+neo4j:
+  ip-address: 10.0.1.54
+  instanceId: i-af0db813
+#  instance-type: m3.large
+#  machine-image: ami-b092aaad # debian 8 (jessy)
+#  scripts:
+#    - install-neo4j.sh
+#  elasticsearch:
+#    ip-address: 10.0.1.55
+#    instance-type: m3.xlarge
+#    machine-image: ami-b092aaad # debian 8 (jessy)
+#    scripts:
+#      - install-elasticsearch.sh
+```
 
 
 
