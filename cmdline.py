@@ -22,7 +22,7 @@ def exit_with_message(message):
 
 # print usage
 if len(sys.argv) < 4:
-    usage = """Usage: %s [cmd] config-file
+    usage = """Usage: %s [cmd] config-file host
 
     For example, create a cluster:
 
