@@ -188,11 +188,24 @@ identifiers are region dependent.
     --query "Images[*].[Architecture,ImageId,VirtualizationType,Name]" \
     --output text
 
-# Set up staging environment
+# Set up and tear down staging environment
 
-Run the script `./setup_staging.sh`. This script will clone ElasticSearch repository and create a new cluster pointing at it.
+Run the script `./setup_staging.sh`. This script will clone ElasticSearch's repository and create a new cluster pointing at it.
 
 Then it will clone the disk of Neo4j's production instance and create and launch an instance based on the cloned disk.
+The id of the instance to clone is specified in the config file `cluster_staging.yml`.
+
+Finally, it will launch and install the following machines:
+
+```
+redis-staging
+core-staging
+api-staging
+```
+
+To tear down the staging environment, run the script `teardown_staging.sh`.
+Tearing down is not fully automated, you need to perform some actions as specified in the script's output.
+
 
 
 

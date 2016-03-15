@@ -18,10 +18,10 @@ def hr(name=None):
 
 def exit_with_message(message):
     print(message)
-    sys.exit(-1)
+    sys.exit(1)
 
 # print usage
-if len(sys.argv) < 4:
+if len(sys.argv) < 54:
     usage = """Usage: %s [cmd] config-file
 
     For example, create a cluster:
@@ -114,8 +114,8 @@ for (machine, props) in conf['hosts'].items():
     # instance running, lets tag it
     aws.tag_instance(inst, "histograph", machine)
 
-    # wait for ssh to come up
-    ssh.wait_SSH_up(inst.public_dns_name)
+    # wait for ssh to come up, call ssh with the username provided in the yaml config file
+    ssh.wait_SSH_up(inst.public_dns_name, list(conf['users'].keys())[0])
 
     # start tailing cloudinit output
     ssh.tail_cloudinit(inst.public_dns_name)

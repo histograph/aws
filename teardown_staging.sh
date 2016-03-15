@@ -13,6 +13,9 @@ export AWS_ACCESS_KEY_ID=$(cat ~/.aws/credentials | grep aws_access_key_id | tr 
 export AWS_SECRET_ACCESS_KEY=$(cat ~/.aws/credentials | grep aws_secret_access_key | tr -d ' ' | cut -f2 -d'=')
 
 source ${VENV_DIR}/bin/activate
+
+${VENV_DIR}/bin/pip install -r requirements.txt
+
 cd staging
 
 ./clean_instances.sh
@@ -25,5 +28,7 @@ echo "Make sure to deregister neo4j_staging AMI, and delete snapshots and EBS Vo
 
 #5. delete elasticsearch
 ./clean_es_service.sh
+
+cd ..
 
 deactivate

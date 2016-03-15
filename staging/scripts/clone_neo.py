@@ -1,12 +1,27 @@
+import sys
+import os
+import yaml
+
 import boto3
 import time
 
 ec2 = boto3.resource('ec2')
 client = boto3.client('ec2')
 
+config_filename = sys.argv[1]
+
+# check if config file exists
+if not os.path.exists(config_filename):
+    print("no such file '%s'" % config_filename)
+    sys.exit(1)
+
+# load configuration
+with open(config_filename, "r") as f:
+    conf = yaml.load(f)
+
 response = client.create_image(
 		DryRun=False,
-		InstanceId='i-af0db813',
+		InstanceId=conf['neo4j']['instanceId']
 		Name='neo4j_staging',
 		Description='histograph neo4j staging',
 		NoReboot=True,
@@ -40,7 +55,7 @@ if(image_id):
 				'DeviceIndex': 0,
 				'SubnetId': "subnet-1a960e73", # todo create staging subnet
 				'Groups': ["sg-b9ed94d0"],  # make it a singleton list
-				'PrivateIpAddress': "10.0.1.54", #todo: get from config
+				'PrivateIpAddress': conf['neo4j']['instanceId'],
 				'AssociatePublicIpAddress': True
 			}]
 	)
@@ -51,7 +66,7 @@ if(image_id):
 	waiter = client.get_waiter('instance_running')
 	waiter.wait(InstanceIds=[inst.id])
 	inst.create_tags(Tags=[{
-		"Key" : "Name", 
+		"Key" : "Name",
 		"Value" : "neo4j_staging"
 	}])
 

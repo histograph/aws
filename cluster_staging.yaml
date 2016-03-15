@@ -37,12 +37,13 @@ hosts:
       - install-redis.sh
 
 # these two are cloned from production i/o created from scratch
-#  neo4j:
-#    ip-address: 10.0.1.54
-#    instance-type: m3.large
-#    machine-image: ami-b092aaad # debian 8 (jessy)
-#    scripts:
-#      - install-neo4j.sh
+neo4j:
+  ip-address: 10.0.1.54
+  instanceId: i-af0db813
+#  instance-type: m3.large
+#  machine-image: ami-b092aaad # debian 8 (jessy)
+#  scripts:
+#    - install-neo4j.sh
 #  elasticsearch:
 #    ip-address: 10.0.1.55
 #    instance-type: m3.xlarge
