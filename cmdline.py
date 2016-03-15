@@ -28,7 +28,7 @@ if len(sys.argv) < 4:
 
         aws-tool create cluster.yaml host
 
-    Where host is one of the hosts listed in your configuration file\n%s
+    Where host is one of the hosts listed in your configuration file\n
 
     """ % sys.argv[0]
     exit_with_message(usage)
