@@ -1,12 +1,5 @@
 #!/bin/bash
 
-
-if [ "$(echo $0)" != "-bash" ]
-then
-        echo "Run the command with source!!!"
-        exit 1
-fi
-
 export VENV_DIR=venv
 
 echo "Reading AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY from ~/.aws/credentials"
