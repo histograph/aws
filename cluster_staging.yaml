@@ -1,7 +1,7 @@
 users:
   # just place your ~/.ssh/id_*.pub key contents here
   # if you dont have such a public key, run `ssh-keygen`
-  taco: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCHmaus7xDvc7vMZy8Y7sDqMaK964pqDx9+nlPhhPox298y7hVsMih1yGqhk/ir3pabDVKCoCv1QcTCVQ1ZOqBHyJm5MINJFtciDrSXm6wH3gGS1sSZzolHDvS7PRvaKJjUH9gS3ZyrR0MDyeATP97hTGe8yETUtGhRalWHWpkPP1R3JFdDIsai/PYP6I5BjgVsTdPNYa6zTxSXYJqvqO9cXmK/rAzcw5r58W+r8YZIJl1QcDgJrobJpdJRGhJXVetOSfBCil8mseWq2Y+7ghmp9sTSbJbW6EBxQatZ0so7jyjrJP5BPRjjoU2taCKqqyji2wwkTj9jP3DojPu4MfsT"
+  stefano: "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAxIMaALlvQooxnPj9NiDMyhMap7IX0j4Yq/LHEZc+c4sj/KQXjovM845F/H8yj9r5Ibw4YWzkKROB9fRW+ZYcR43dlbDmlf9hZO/QYtWuk3ZC5DOvqBQ2+/Ume2sU70nyhR3u+Y60cXUhpSrr5sf1yTiQweNk8VhfezjXFCpcEUhEFtBYHiVrGY4wCIsx9IZ63Pr41A+pYiqMINXgxw/cB9s4uMIyNBG8NIiaPJC3MJgpfaX3FXLKT9BefrJP3kWBh1jTMfYyDiKCgerMh/2d5YPSiWDt1R3SPh9jQ0WgckCQsbMgl8df9Um+8iEO63iI88PIw11sEAvlE/wlUN03kQ== stefano@waag"
 
 base-conf:
   # default image, amazon linux
@@ -37,12 +37,13 @@ hosts:
       - install-redis.sh
 
 # these two are cloned from production i/o created from scratch
-#  neo4j:
-#    ip-address: 10.0.1.54
-#    instance-type: m3.large
-#    machine-image: ami-b092aaad # debian 8 (jessy)
-#    scripts:
-#      - install-neo4j.sh
+neo4j:
+  ip-address: 10.0.1.54
+  instanceId: i-af0db813
+#  instance-type: m3.large
+#  machine-image: ami-b092aaad # debian 8 (jessy)
+#  scripts:
+#    - install-neo4j.sh
 #  elasticsearch:
 #    ip-address: 10.0.1.55
 #    instance-type: m3.xlarge

@@ -3,26 +3,29 @@ import paramiko
 from time import sleep
 from log import log
 import sys
+import logging
 
-def wait_SSH_up(host):
+
+def wait_SSH_up(host,myuser):
 	log("Waiting for SSH to come up")
+	#logging.basicConfig(level=logging.DEBUG)
 	while(True):
 		try:
 			client = paramiko.SSHClient()
 			client.set_missing_host_key_policy(paramiko.client.AutoAddPolicy())
-			client.connect(host, timeout=10)
+			client.connect(host, username=myuser,timeout=10)
 			stdin, stdout, stderr = client.exec_command("echo")
 			exit_status = stdout.channel.recv_exit_status()
 			client.close()
 			return (exit_status == 0)
 		except paramiko.AuthenticationException:
-			print("Authentication failed when connecting to %s", host)
+			print("Authentication failed when connecting to ", host)
 			sys.exit(1)
 		except:
 			sleep(2)
 			log('.')
 
-def tail_cloudinit(host):
+def tail_cloudinit(host,myuser):
 	log("Tailing cloud init log*")
 
 	# Wait until cloud-init is finished to stop the tail
@@ -39,7 +42,7 @@ def tail_cloudinit(host):
 	client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
 	# Connect to the host
-	client.connect(host, timeout=10)
+	client.connect(host, username=myuser, timeout=10)
 
 	stdin, stdout, stderr = client.exec_command("tail -f /var/log/cloud-init-output.log")
 	for line in stdout:

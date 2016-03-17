@@ -18,17 +18,17 @@ def hr(name=None):
 
 def exit_with_message(message):
     print(message)
-    sys.exit(-1)
+    sys.exit(1)
 
 # print usage
 if len(sys.argv) < 4:
-    usage = """Usage: %s [cmd] config-file
+    usage = """Usage: %s [cmd] config-file host
 
     For example, create a cluster:
 
         aws-tool create cluster.yaml host
 
-    Where host is one of the hosts listed in your configuration file\n%s
+    Where host is one of the hosts listed in your configuration file\n
 
     """ % sys.argv[0]
     exit_with_message(usage)
@@ -114,11 +114,11 @@ for (machine, props) in conf['hosts'].items():
     # instance running, lets tag it
     aws.tag_instance(inst, "histograph", machine)
 
-    # wait for ssh to come up
-    ssh.wait_SSH_up(inst.public_dns_name)
+    # wait for ssh to come up, call ssh with the username provided in the yaml config file
+    ssh.wait_SSH_up(inst.public_dns_name, list(conf['users'].keys())[0])
 
-    # start tailing cloudinit output
-    ssh.tail_cloudinit(inst.public_dns_name)
+    # start tailing cloudinit output, call ssh with the username provided in the yaml config file
+    ssh.tail_cloudinit(inst.public_dns_name, list(conf['users'].keys())[0])
 
     # log result
     print("up and running!")

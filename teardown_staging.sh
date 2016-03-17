@@ -1,7 +1,18 @@
 #teardown and clean up the staging environment
 
-source venv/bin/activate
+export VENV_DIR=venv
+
+echo "Reading AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY from ~/.aws/credentials"
+
+export AWS_ACCESS_KEY_ID=$(cat ~/.aws/credentials | grep aws_access_key_id | tr -d ' ' | cut -f2 -d'=')
+export AWS_SECRET_ACCESS_KEY=$(cat ~/.aws/credentials | grep aws_secret_access_key | tr -d ' ' | cut -f2 -d'=')
+
+source ${VENV_DIR}/bin/activate
+
+${VENV_DIR}/bin/pip install -r requirements.txt
+
 cd staging
+
 ./clean_instances.sh
 
 #4. teardown neo4j
@@ -13,3 +24,6 @@ echo "Make sure to deregister neo4j_staging AMI, and delete snapshots and EBS Vo
 #5. delete elasticsearch
 ./clean_es_service.sh
 
+cd ..
+
+deactivate
