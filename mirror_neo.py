@@ -1,12 +1,27 @@
+import sys
+import os
+import yaml
+
 import boto3
 import time
 
 ec2 = boto3.resource('ec2')
 client = boto3.client('ec2')
 
+config_filename = sys.argv[1]
+
+# check if config file exists
+if not os.path.exists(config_filename):
+    print("no such file '%s'" % config_filename)
+    sys.exit(1)
+
+# load configuration
+with open(config_filename, "r") as f:
+    conf = yaml.load(f)
+
 response = client.create_image(
 		DryRun=False,
-		InstanceId='i-37568d8b',
+		InstanceId=conf['neo4j']['instanceId'],
 		Name='neo4j_mirror',
 		Description='histograph neo4j mirror',
 		NoReboot=True,
@@ -40,7 +55,7 @@ if(image_id):
 				'DeviceIndex': 0,
 				'SubnetId': "subnet-71b36f0a", # production subnet
 				'Groups': ["sg-baac24d3"],  # make it a singleton list
-				'PrivateIpAddress': "10.0.0.64", 
+				'PrivateIpAddress': conf['neo4j']['ip-address'],
 				'AssociatePublicIpAddress': True
 			}]
 	)
@@ -51,7 +66,7 @@ if(image_id):
 	waiter = client.get_waiter('instance_running')
 	waiter.wait(InstanceIds=[inst.id])
 	inst.create_tags(Tags=[{
-		"Key" : "Name", 
+		"Key" : "Name",
 		"Value" : "neo4j_mirror"
 	}])
 
