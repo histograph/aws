@@ -53,8 +53,8 @@ if(image_id):
 			InstanceType="r3.large",
 			NetworkInterfaces=[{
 				'DeviceIndex': 0,
-				'SubnetId': "subnet-1a960e73", # todo create staging subnet
-				'Groups': ["sg-b9ed94d0"],  # make it a singleton list
+				'SubnetId': conf['base-conf']['subnet'], # todo create staging subnet
+				'Groups': [conf['base-conf']['security-group']],  # make it a singleton list
 				'PrivateIpAddress': conf['neo4j']['ip-address'],
 				'AssociatePublicIpAddress': True
 			}]
